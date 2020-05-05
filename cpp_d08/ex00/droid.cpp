@@ -1,0 +1,121 @@
+//
+// droid.cpp for Project-Master in /home/tekm/tek1/cpp_d08/ex00
+// 
+// Made by leroy_0
+// Login   <leroy_0@epitech.eu>
+// 
+// Started on  Wed Jan 11 11:16:17 2017 leroy_0
+// Last update Wed Jan 11 11:16:17 2017 leroy_0
+//
+
+#include 	<iostream>
+#include 	<string>
+#include	"droid.hh"
+
+Droid::Droid(const std::string &serial) : Attack(25), Toughness(15)
+{
+	this->Id = serial;
+	this->Energy = 50;
+	this->Status = new std::string("Standing by");
+
+	std::cout << "Droid '" << this->Id << "' Activated" << std::endl;
+}
+
+Droid::Droid(const Droid &k) : Attack(25), Toughness(15)
+{
+	this->Id = k.getId();
+	this->Energy = k.getEnergy();
+	this->Status = new std::string(* k.getStatus());
+
+	std::cout << "Droid '" << this->getId() << "' Activated, Memory Dumped" << std::endl;
+}
+
+Droid::~Droid()
+{
+	std::cout << "Droid '" << this->Id << "' Destroyed" << std::endl;	
+}
+
+std::string 		Droid::getId() const
+{
+	return (this->Id);
+}
+
+void		 		Droid::setId(const std::string Id)
+{
+	this->Id = Id;
+}
+
+size_t 				Droid::getEnergy() const
+{
+	return (this->Energy);
+}
+
+void		 		Droid::setEnergy(const size_t Energy)
+{
+	this->Energy = Energy;
+}
+
+size_t 				Droid::getAttack() const
+{
+	return (this->Attack);
+}
+
+size_t 				Droid::getToughness() const
+{
+	return (this->Toughness);
+}
+
+std::string 		*Droid::getStatus() const
+{
+	return (this->Status);
+}
+
+void		 		Droid::setStatus(std::string *Status)
+{
+	this->Status = Status;
+}
+
+std::ostream& 		operator<<(std::ostream& os, const Droid & d)
+{
+	os << "Droid '" << d.getId() << "', " << d.getStatus()->c_str() <<  ", " << d.getEnergy();
+	return (os);
+}
+
+Droid&				operator<<(Droid & a, size_t & Durasel)
+{
+	size_t			diff = 100 - a.getEnergy();
+
+	a.setEnergy(a.getEnergy() + Durasel);
+
+	if (a.getEnergy() > 100)
+		a.setEnergy(100);
+
+	if (diff > Durasel)
+		Durasel = 0;
+	else
+		Durasel -= diff;
+
+	return (a);
+}
+
+Droid&		 		Droid::operator=(const Droid &b)
+{
+	this->setId(b.getId());
+	this->setEnergy(b.getEnergy());
+	this->setStatus(new std::string(* b.getStatus()));
+	return (*this);
+}
+
+bool		 		Droid::operator==(const Droid &b) const
+{
+	if (this->getId() == b.getId() && this->getEnergy() == b.getEnergy() && this->getStatus()->compare(b.getStatus()->c_str()) == 0)
+		return (true);
+	return (false);
+}
+
+bool		 		Droid::operator!=(const Droid &b) const
+{
+	if (this->getId() == b.getId() && this->getEnergy() == b.getEnergy() && this->getStatus()->compare(b.getStatus()->c_str()) == 0)
+		return (false);
+	return (true);
+}
